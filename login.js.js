@@ -7,8 +7,16 @@ function login(event) {
   // Check if username and password are correct
   if (username === "vishnu" && password === "237620") {
     document.getElementById("message").innerHTML = "Login successful!";
+    const chatInput = document.createElement("input");
+    chatInput.setAttribute("type", "text");
+    chatInput.setAttribute("id", "chat-input");
+    document.body.appendChild(chatInput);
   } else if (username === "aswani" && password === "237620") {
     document.getElementById("message").innerHTML = "Login successful!";
+    const chatInput = document.createElement("input");
+    chatInput.setAttribute("type", "text");
+    chatInput.setAttribute("id", "chat-input");
+    document.body.appendChild(chatInput);
   } else {
     document.getElementById("message").innerHTML = "Invalid username or password";
   }
