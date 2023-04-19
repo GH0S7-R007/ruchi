@@ -1,54 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {
-  font-family: Arial, Helvetica, sans-serif;
-background-color: black;
-}
-p1{
-font-size:16px ;
-color: white;
-}
-h2{
-color: white;
-font-size: 50px ;
-font-style: sans-serif;
-}
-.pill-nav a {
-  display: inline-block;
-  color:white;
-  text-align: center;
-  padding: 14px;
-  text-decoration: none;
-  font-size: 17px;
-  border-radius: 5px;
-}
-
-.pill-nav a:hover {
-  background-color: yellow;
-  color: black;
-}
-
-.pill-nav a.active {
-  background-color: dodgerblue;
-  color: white;
-}
-
-</style>
+    <title>Chat Bot</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#chat-form").on("submit", function (e) {
+                e.preventDefault();
+                var userInput = $("#user-input").val();
+                $("#user-input").val("");
+                $("#chat-display").append("<p><strong>User: </strong>" + userInput + "</p>");
+                $.ajax({
+                    type: "POST",
+                    url: "/get_response",
+                    data: {user_input: userInput},
+                    success: function (data) {
+                        $("#chat-display").append("<p><strong>Tessa: </strong>" + data + "</p>");
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
-
-<center><h2>Ruchi Food Products</h2></center>
-
-<div class="pill-nav">
-  <a class="active" href="#home">Plans</a>
-  <a href="party.html"><p1>Party</a>
-  <a href="https://docs.google.com/spreadsheets/d/1A7l_1FZZQc9MrdJvrlFEjYlSVjmphVLHR9_UUF_LhXY/edit#gid=1509298055">Contacts</a>
-  <a href="#about">Accounts </a></p1>
-</div>
-<br><br>
-<img src="ruchi.jpg" alt="Girl in a jacket" width="360" height="250">
+    <h1>Chat Bot</h1>
+    <div id="chat-display"></div>
+    <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Enter your question...">
+        <input type="submit" value="Submit">
+    </form>
 </body>
 </html>
