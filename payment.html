@@ -17,11 +17,12 @@
       return timestamp + Math.floor(Math.random() * 10000);
     }
 
-    // Update the payment link with the new TID
+    // Update the payment link with the new TID and default transaction amount
     function updatePaymentLink() {
       var tid = generateTID();
+      var amount = 100; // Set the default transaction amount to 100 Rs
       var paymentLink = document.getElementById("paymentLink");
-      paymentLink.href = "phonepe://pay?pa=8547257620@ybl&pn=Vishnu%20Saji&mc=vs7620&tid=" + tid + "&tr=100&tn=dr%20consultation&url=done.html";
+      paymentLink.href = "phonepe://pay?pa=8547257620@ybl&pn=Vishnu%20Saji&mc=vs7620&tid=" + tid + "&tr=" + amount + "&tn=dr%20consultation&url=done.html";
     }
 
     // Call the function to update the payment link on page load
