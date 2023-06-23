@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head><style> body {
+      font-family: Arial, sans-serif;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    form {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="date"] {
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    #searchButton {
+      padding: 5px 10px;
+      font-size: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }</style>
+  <title>Raw Data Search</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Google Sheets API URL
+      const apiUrl = "https://sheets.googleapis.com/v4/spreadsheets/1JhZ1_0H9x2uifAEHpDZJ8jmjrfPbJT6hdvkK_JNvwfU/values/Sheet1!A1:E900?key=AIzaSyDhT3l7hQXQSOzOscEk4R7Edz57ec6VF0Q";
+
+      // Function to retrieve raw data based on the entered date
+      function searchRawData() {
+        // Clear previous search results
+        $("#result").empty();
+
+        // Get the entered date
+        const searchDate = $("#searchDate").val();
+
+        // Fetch data from Google Sheets API
+        $.get(apiUrl, function(response) {
+          const rawData = response.values;
+
+          // Iterate over the rows and search for the entered date
+          for (let i = 0; i < rawData.length; i++) {
+            const row = rawData[i];
+            const date = row[3]; // Assuming the date is in the first column (A)
+
+            // Check if the date matches the search date
+            if (date === searchDate) {
+              // Display the matching row
+              const rowHtml = "<tr><td>" + row.join("</td><td>") + "</td></tr>";
+              $("#result").append(rowHtml);
+            }
+          }
+        });
+      }
+
+      // Bind the search button click event
+      $("#searchButton").click(searchRawData);
+    });
+  </script>
+</head>
+<body>
+  <h1>Get Appointments</h1>
+  <form>
+    <label for="searchDate">Enter Date:</label>
+    <input type="date" id="searchDate" name="searchDate">
+    <button type="button" id="searchButton">Search</button>
+  </form>
+
+  <h2>Search Results</h2>
+  <table id="result" border="1">
+    <!-- Search results will be displayed here -->
+  </table>
+</body>
+</html>
