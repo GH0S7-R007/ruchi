@@ -83,7 +83,7 @@
       cursor: pointer;
       font-size: 16px;
     }
-    </style>
+  </style>
 </head>
 <body>
   <div class="navbar">
@@ -119,15 +119,18 @@
         <option value="22:00">10:00 PM</option>
       </select>
       
-      <button class="submit-button" type="submit">Book Appointment</button>
+      <button class="submit-button" type="submit" id="submit-button">Book Appointment</button>
     </form>
   </div>
-
+  
+  <div id="message-container"></div> <!-- Message container -->
+  
   <script>
     function submitForm(event) {
       event.preventDefault(); // Prevent form submission
       
       const form = document.getElementById('appointment-form');
+      const submitButton = document.getElementById('submit-button');
       
       // Get form values
       const name = form.elements['name'].value;
@@ -135,10 +138,6 @@
       const mobile = form.elements['mobile'].value;
       const date = form.elements['date'].value;
       const time = form.elements['time'].value;
-      
-      // Disable submit button
-      const submitButton = form.querySelector('.submit-button');
-      submitButton.disabled = true;
       
       // Send data to Google Sheet
       const url = 'https://script.google.com/macros/s/AKfycby29ERcEQPM9SLBXtMSvIVaT3vqZhhycX1ADhn1xexb3dzAXK0aWuA05wZLNv758ZwEpg/exec';
@@ -160,22 +159,20 @@
       })
       .then(response => {
         // Handle success
-        console.log('Appointment booked successfully');
-        // You can add any additional actions or messages here
-        
-        // Clear input fields
-        form.reset();
-        // Enable submit button
-        submitButton.disabled = false;
+        showMessage('Appointment booked successfully, We will contact you soon');
+        form.reset(); // Clear input fields
+        submitButton.disabled = true; // Disable submit button
       })
       .catch(error => {
         // Handle error
-        console.error('Error booking appointment:', error);
+        showMessage('Error booking appointment');
         // You can add any error handling or messages here
-        
-        // Enable submit button
-        submitButton.disabled = false;
       });
+    }
+    
+    function showMessage(message) {
+      const messageContainer = document.getElementById('message-container');
+      messageContainer.textContent = message;
     }
   </script>
 </body>
