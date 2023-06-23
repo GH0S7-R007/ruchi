@@ -1,33 +1,81 @@
+<!DOCTYPE html>
 <html>
 <head>
-<style>
-h2{ font-size: 80px ;
-	color: white;
-}
-p1{
- 	font-size: 50px ;
-	color:white;
-}
-button{ font-size: 40px ;
-}
-table, th, td {
-  border: 1px solid yellow;
-  padding: 5px;
-}
-table {
-  border-spacing: 15px;
-}
- body {
-  background-color: black ;
-}
-</style>
+  <title>Doctor Profile</title>
+  <style>
+    .container {
+      display: flex;
+    }
+    
+    .left-side {
+      flex: 1;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .left-side img {
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+    }
+    
+    .right-side {
+      flex: 1;
+      padding: 20px;
+    }
+    .profile {
+    background-color: blue;
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+    .profile {
+      margin-bottom: 20px;
+    }
+    
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .green-button {
+      background-color: green;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body><center>
-<h2>Binu   Store Thengumthara</h2>
+<body>
+  <div class="container">
+    <div class="left-side">
+      <div>
+        <a href="alisha.jpeg" target="_blank">
+          <img src="alisha.jpeg" alt="Dr. Photo">
+        </a>
+      </div>
+      <div>
+        <h2>Dr. Alisha</h2>
+        <p>BAMS</p>
+      </div>
+      <div class="button-container">
+        <a href="index.html" class="green-button">Book Online Consultation</a>
+      </div>
+      </div>
+    <div class="right-side">
+      <div class="profile">
+  <h2>Why You Should Choose an Online Appointment with Your Doctor?</h2>
+  <ul>
+    <li>Convenience: Online doctor consultations provide convenience as you can connect with a doctor from the comfort of your own home. It eliminates the need for travel and waiting in a physical clinic, saving you time and effort.</li>
+    <li>Accessibility: Online consultations make healthcare accessible to individuals who may have limited mobility, live in remote areas, or face transportation challenges. It ensures that people can seek medical advice and assistance regardless of their location.</li>
+    <li>Time and Cost Savings: By opting for online consultations, you can save time and costs associated with commuting, parking fees, and waiting room visits. Additionally, virtual consultations are often more affordable compared to in-person appointments.</li>
+  </ul>
+</div>
 
-<table style="width:100%">
-  <tr>
-   <th><p1>Date</p1></th><th><p1>No.Banana</p1></th><th><p1>No.Kappa</p1></th><th><p1>Total Amt</p1></th><th><p1>Pending Amt</p1></th></body></html><br><br></a></th></tr>
-<th><p1>30/03/21</p1></th><th><p1>4</p1></th><th><p1>5</p1></th><th><p1>370</p1></th><th><p1>0</p1></th></body></html><br><br></a></th></tr>
-
-<th><p1>0</p1></th><th><p1>0</p1></th><th><p1>0</p1></th><th><p1>0</p1></th><th><p1>0</p1></th></body></html><br><br></a></th></tr>
+    </div>
+  </div>
+</body>
+</html>
