@@ -1,33 +1,180 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chat Bot</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#chat-form").on("submit", function (e) {
-                e.preventDefault();
-                var userInput = $("#user-input").val();
-                $("#user-input").val("");
-                $("#chat-display").append("<p><strong>User: </strong>" + userInput + "</p>");
-                $.ajax({
-                    type: "POST",
-                    url: "/get_response",
-                    data: {user_input: userInput},
-                    success: function (data) {
-                        $("#chat-display").append("<p><strong>Tessa: </strong>" + data + "</p>");
-                    }
-                });
-            });
-        });
-    </script>
+  <title>Appointment Booking</title>
+  <style>
+    body {
+      background-color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .navbar {
+      background-color: #f0f0f0;
+      padding: 10px;
+      text-align: center;
+    }
+    
+    .back-button {
+      color: #333;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    
+    .profile-pic {
+      border-radius: 50%;
+      display: block;
+      margin: 20px auto;
+      width: 150px;
+    }
+    
+    .doctor-name {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    .doctor-degree {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .form-container {
+      background-color: #f8f8f8;
+      margin: 20px;
+      padding: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 10px;
+      background-color: transparent;
+    }
+    
+    .form-input:focus {
+      outline: none;
+    }
+    
+    .form-input-inline {
+      display: inline-block;
+      width: 48%;
+      margin-right: 2%;
+    }
+    
+    .submit-button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    </style>
 </head>
 <body>
-    <h1>Chat Bot</h1>
-    <div id="chat-display"></div>
-    <form id="chat-form">
-        <input type="text" id="user-input" placeholder="Enter your question...">
-        <input type="submit" value="Submit">
+  <div class="navbar">
+    <a class="back-button" href="#">Back</a>
+  </div>
+  
+  <img class="profile-pic" src="https://static-00.iconduck.com/assets.00/sick-leave-icon-442x512-jb5o2114.png" alt="Doctor's Profile Picture">
+  
+  <div class="doctor-name">Dr. Alisha</div>
+  <div class="doctor-degree">BAMS</div>
+  
+  <div class="form-container">
+    <form id="appointment-form" onsubmit="submitForm(event)">
+      <label class="form-label" for="name">Patient Name:</label>
+      <input class="form-input" type="text" id="name" required>
+      
+      <label class="form-label" for="age">Age:</label>
+      <input class="form-input" type="number" id="age" required>
+      
+      <label class="form-label" for="mobile">Mobile Number:</label>
+      <input class="form-input" type="tel" id="mobile" required>
+      
+      <label class="form-label" for="date">Date:</label>
+      <input class="form-input" type="date" id="date" required>
+      
+      <label class="form-label" for="time">Time:</label>
+      <select class="form-input-inline" id="time" required>
+        <option value="" disabled selected>Select time</option>
+        <option value="18:00">6:00 PM</option>
+        <option value="19:00">7:00 PM</option>
+        <option value="20:00">8:00 PM</option>
+        <option value="21:00">9:00 PM</option>
+        <option value="22:00">10:00 PM</option>
+      </select>
+      
+      <button class="submit-button" type="submit">Book Appointment</button>
     </form>
+  </div>
+
+  <script>
+    function submitForm(event) {
+      event.preventDefault(); // Prevent form submission
+      
+      const form = document.getElementById('appointment-form');
+      
+      // Get form values
+      const name = form.elements['name'].value;
+      const age = form.elements['age'].value;
+      const mobile = form.elements['mobile'].value;
+      const date = form.elements['date'].value;
+      const time = form.elements['time'].value;
+      
+      // Disable submit button
+      const submitButton = form.querySelector('.submit-button');
+      submitButton.disabled = true;
+      
+      // Send data to Google Sheet
+      const url = 'https://script.google.com/macros/s/AKfycby29ERcEQPM9SLBXtMSvIVaT3vqZhhycX1ADhn1xexb3dzAXK0aWuA05wZLNv758ZwEpg/exec';
+      const payload = {
+        name: name,
+        age: age,
+        mobile: mobile,
+        date: date,
+        time: time
+      };
+      
+      fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        // Handle success
+        console.log('Appointment booked successfully');
+        // You can add any additional actions or messages here
+        
+        // Clear input fields
+        form.reset();
+        // Enable submit button
+        submitButton.disabled = false;
+      })
+      .catch(error => {
+        // Handle error
+        console.error('Error booking appointment:', error);
+        // You can add any error handling or messages here
+        
+        // Enable submit button
+        submitButton.disabled = false;
+      });
+    }
+  </script>
 </body>
 </html>
