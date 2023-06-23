@@ -5,6 +5,27 @@
 </head>
 <body>
   <h1>Make Payment via PhonePe</h1>
-  <a href="phonepe://pay?pa=<9074614530@ybl>&pn=<Vishnu Saji>&mc=<vs7620>&tid=<20230623123045>&tr=<100>&tn=<dr consultation>&url=<done.html>" target="_blank">Click here to make payment</a>
+  <a id="paymentLink" href="#" target="_blank">Click here to make payment</a>
+
+  <script>
+    // Generate a new transaction ID (TID)
+    function generateTID() {
+      // Get the current timestamp
+      var timestamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 14);
+
+      // Return the TID as a combination of timestamp and a random number
+      return timestamp + Math.floor(Math.random() * 10000);
+    }
+
+    // Update the payment link with the new TID
+    function updatePaymentLink() {
+      var tid = generateTID();
+      var paymentLink = document.getElementById("paymentLink");
+      paymentLink.href = "phonepe://pay?pa=<8547257620@ybl>&pn=<Vishnu Saji>&mc=<vs7620>&tid=" + tid + "&tr=<100>&tn=<dr consultation>&url=<done.html>";
+    }
+
+    // Call the function to update the payment link on page load
+    updatePaymentLink();
+  </script>
 </body>
 </html>
