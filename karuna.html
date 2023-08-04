@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Page</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f2f2f2;
+    }
+
+    .container {
+      text-align: center;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      text-align: left;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    <form onsubmit="return handleLogin()">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required><br>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required><br>
+
+      <button type="submit">Login</button>
+    </form>
+    <div id="loginError" class="error-message"></div>
+  </div>
+
+  <script>
+    const users = [
+      { username: "vishnu", password: "mobily@123" },
+      { username: "amal", password: "amalpklm@004" },
+      { username: "akhil", password: "gopi@90htt" },
+      { username: "aravind", password: "toyan@0867d" },
+      { username: "akgilg", password: "@kgi1@90htt" },
+      { username: "pranav", password: "PraNav_123" },
+      { username: "Aromal", password: "Arom@l_5678" },
+      { username: "Sooraj", password: "S00raj#2023" },
+      { username: "Jishnu", password: "Ji$hnu_123" },
+    ];
+
+    function handleLogin() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const loginError = document.getElementById("loginError");
+
+      const user = users.find((user) => user.username === username && user.password === password);
+
+      if (user) {
+        // Successful login - Redirect to desired page or show a success message
+        alert("Login successful!");
+        // Replace the following line with your desired redirection logic
+        window.location.href = "data.html";
+        return false; // Prevent form submission
+      } else {
+        // Login failed - Show an error message
+        loginError.textContent = "Invalid username or password.";
+        return false; // Prevent form submission
+      }
+    }
+  </script>
+</body>
+</html>
