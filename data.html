@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Karuna Arts and Sports Club</title>
+  <style>
+    body {
+      background-color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .navbar {
+      background-color: #f0f0f0;
+      padding: 10px;
+      text-align: center;
+    }
+    
+    .back-button {
+      color: #333;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    
+    .profile-pic {
+      border-radius: 50%;
+      display: block;
+      margin: 20px auto;
+      width: 150px;
+    }
+    
+    .doctor-name {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    .doctor-degree {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .form-container {
+      background-color: #f8f8f8;
+      margin: 20px;
+      padding: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 10px;
+      background-color: transparent;
+    }
+    
+    .form-input:focus {
+      outline: none;
+    }
+    
+    .form-input-inline {
+  display: inline-block;
+  width: 48%;
+  height: 48px;
+  margin-right: 2%;
+}
+
+    
+    .submit-button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 20px 40px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a class="back-button" href="#"></a>
+  </div>
+
+  <div class="doctor-name">Karuna Arts and Sports Club</div>
+  <div class="doctor-degree">Payment Register</div>
+
+  <div class="form-container">
+    <form id="appointment-form" onsubmit="submitForm(event)">
+      <label class="form-label" for="name">User</label>
+      <input class="form-input" type="text" id="user" required>
+
+      <label class="form-label" for="date">Date:</label>
+      <input class="form-input" type="date" id="date" required>
+
+      <label class="form-label" for="age">Payment details:</label>
+      <input class="form-input" type="text" id="pay" required>
+
+      <label class="form-label" for="mobile">Amount:</label>
+      <input class="form-input" type="number" id="amt" required>
+
+      <button class="submit-button" type="submit" id="submit-button">Save</button>
+    </form>
+  </div>
+
+  <div id="message-container"></div> <!-- Message container -->
+
+  <script>
+    // Function to save data to the Google Sheet
+    function saveDataToSheet(data) {
+      gapi.client.sheets.spreadsheets.values.append({
+        spreadsheetId: '1WwaMitUA9-dT3oI1uyoFgKWPCptr4dn_67XfgxeXRh4', // Replace with your Google Sheet ID
+        range: 'Sheet1', // Replace with your sheet name
+        valueInputOption: 'RAW',
+        insertDataOption: 'INSERT_ROWS',
+        resource: {
+          values: [data]
+        }
+      }).then((response) => {
+        console.log('Data saved successfully', response);
+      }, (error) => {
+        console.error('Error saving data', error);
+      });
+    }
+
+    // Function to handle form submission
+    function submitForm(event) {
+      event.preventDefault(); // Prevent form submission
+
+      const form = document.getElementById('appointment-form');
+      const user = form.elements['user'].value;
+      const date = form.elements['date'].value;
+      const pay = form.elements['pay'].value;
+      const amt = form.elements['amt'].value;
+
+      // Save data to the Google Sheet
+      const data = [user, date, pay, amt];
+      saveDataToSheet(data);
+
+      // Show success message and clear form fields
+      showMessage('Appointment booked successfully, We will contact you soon');
+      form.reset();
+    }
+
+    // Function to show messages
+    function showMessage(message) {
+      const messageContainer = document.getElementById('message-container');
+      messageContainer.textContent = message;
+    }
+  </script>
+
+  <!-- Include Google Sheets API library -->
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script>
+    // Load the Google Sheets API
+    gapi.load('client:auth2', () => {
+      gapi.client.init({
+        apiKey: 'AIzaSyDhT3l7hQXQSOzOscEk4R7Edz57ec6VF0Q' // Replace with your API key
+      }).then(() => {
+        console.log('Google Sheets API initialized');
+      }, (error) => {
+        console.error('Error initializing Google Sheets API', error);
+      });
+    });
+  </script>
+</body>
+</html>
