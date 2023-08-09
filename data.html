@@ -66,14 +66,6 @@
       outline: none;
     }
     
-    .form-input-inline {
-  display: inline-block;
-  width: 48%;
-  height: 48px;
-  margin-right: 2%;
-}
-
-    
     .submit-button {
       background-color: #4CAF50;
       color: white;
@@ -87,17 +79,26 @@
 </head>
 <body>
   <div class="navbar">
-    <a class="back-button" href="#">Exit</a>
+    
   </div>
   
   <div class="doctor-name">Karuna Arts & Sports Club</div>
   <div class="doctor-degree">Payment Voucher</div>
   
   <div class="form-container">
-    <form id="appointment-form" onsubmit="submitForm(event)">
-      <label class="form-label" for="name">name who paid?</label>
-      <input class="form-input" type="text" id="name" required>
+    <form id="login-form" onsubmit="login(event)">
+      <label class="form-label" for="accessCode">Enter Access Code:</label>
+      <input class="form-input" type="text" id="accessCode" required>
       
+      <button class="submit-button" type="submit" id="login-button">Login</button>
+    </form>
+  </div>
+  
+  <div class="form-container" style="display: none;" id="payment-form-container">
+    <form id="payment-form" onsubmit="submitForm(event)">
+      <label class="form-label" for="name">Name who paid:</label>
+    <input class="form-input" type="text" id="name" required disabled> <!-- Add the 'disabled' attribute here -->
+   
       <label class="form-label" for="age">Paid for what?</label>
       <input class="form-input" type="text" id="age" required>
       
@@ -114,10 +115,40 @@
   <div id="message-container"></div> <!-- Message container -->
   
   <script>
+    const accessCodes = {
+      "102037": "vishnu",
+      "076836": "Amal",
+      "458629": "Akhil G",
+      "997290": "Akhil Rajan",
+      "027845": "Aravind",
+      "027767": "Jishnu",
+      "725669": "Pranav"
+    };
+    
+    function login(event) {
+      event.preventDefault(); // Prevent form submission
+      
+      const accessCodeInput = document.getElementById('accessCode');
+      const enteredCode = accessCodeInput.value;
+      
+      if (accessCodes.hasOwnProperty(enteredCode)) {
+        const nameInput = document.getElementById('name');
+        nameInput.value = accessCodes[enteredCode];
+        accessCodeInput.disabled = true;
+        
+        const loginFormContainer = document.getElementById('login-form');
+        const paymentFormContainer = document.getElementById('payment-form-container');
+        loginFormContainer.style.display = 'none';
+        paymentFormContainer.style.display = 'block';
+      } else {
+        showMessage("You are not able to use this. Please contact Vishnu Saji.");
+      }
+    }
+    
     function submitForm(event) {
       event.preventDefault(); // Prevent form submission
       
-      const form = document.getElementById('appointment-form');
+      const form = document.getElementById('payment-form');
       const submitButton = document.getElementById('submit-button');
       
       // Get form values
@@ -125,7 +156,6 @@
       const age = form.elements['age'].value;
       const mobile = form.elements['mobile'].value;
       const date = form.elements['date'].value;
-      
       
       // Send data to Google Sheet
       const url = 'https://script.google.com/macros/s/AKfycbwQrpYAx2aoH3tmYefZujUsBBlQwmZux24mz8tIA-3Nf-3Do0Iz7HtoALvHkkA5MhdAbQ/exec';
