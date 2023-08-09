@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Karuna Arts and Sports Club</title>
+  <title>Payment Voucher</title>
   <style>
     body {
       background-color: white;
@@ -87,89 +87,80 @@
 </head>
 <body>
   <div class="navbar">
-    <a class="back-button" href="#"></a>
+    <a class="back-button" href="#">Exit</a>
   </div>
-
-  <div class="doctor-name">Karuna Arts and Sports Club</div>
-  <div class="doctor-degree">Payment Register</div>
-
+  
+  <div class="doctor-name">Karuna Arts & Sports Club</div>
+  <div class="doctor-degree">Payment Voucher</div>
+  
   <div class="form-container">
     <form id="appointment-form" onsubmit="submitForm(event)">
-      <label class="form-label" for="name">User</label>
-      <input class="form-input" type="text" id="user" required>
-
+      <label class="form-label" for="name">name who paid?</label>
+      <input class="form-input" type="text" id="name" required>
+      
+      <label class="form-label" for="age">Paid for what?</label>
+      <input class="form-input" type="text" id="age" required>
+      
+      <label class="form-label" for="mobile">Amt paid:</label>
+      <input class="form-input" type="number" id="mobile" required>
+      
       <label class="form-label" for="date">Date:</label>
       <input class="form-input" type="date" id="date" required>
-
-      <label class="form-label" for="age">Payment details:</label>
-      <input class="form-input" type="text" id="pay" required>
-
-      <label class="form-label" for="mobile">Amount:</label>
-      <input class="form-input" type="number" id="amt" required>
-
-      <button class="submit-button" type="submit" id="submit-button">Save</button>
+      
+      <button class="submit-button" type="submit" id="submit-button">Save Receipt</button>
     </form>
   </div>
-
+  
   <div id="message-container"></div> <!-- Message container -->
-
+  
   <script>
-    // Function to save data to the Google Sheet
-    function saveDataToSheet(data) {
-      gapi.client.sheets.spreadsheets.values.append({
-        spreadsheetId: '1WwaMitUA9-dT3oI1uyoFgKWPCptr4dn_67XfgxeXRh4', // Replace with your Google Sheet ID
-        range: 'Sheet1', // Replace with your sheet name
-        valueInputOption: 'RAW',
-        insertDataOption: 'INSERT_ROWS',
-        resource: {
-          values: [data]
-        }
-      }).then((response) => {
-        console.log('Data saved successfully', response);
-      }, (error) => {
-        console.error('Error saving data', error);
-      });
-    }
-
-    // Function to handle form submission
     function submitForm(event) {
       event.preventDefault(); // Prevent form submission
-
+      
       const form = document.getElementById('appointment-form');
-      const user = form.elements['user'].value;
+      const submitButton = document.getElementById('submit-button');
+      
+      // Get form values
+      const name = form.elements['name'].value;
+      const age = form.elements['age'].value;
+      const mobile = form.elements['mobile'].value;
       const date = form.elements['date'].value;
-      const pay = form.elements['pay'].value;
-      const amt = form.elements['amt'].value;
-
-      // Save data to the Google Sheet
-      const data = [user, date, pay, amt];
-      saveDataToSheet(data);
-
-      // Show success message and clear form fields
-      showMessage('Appointment booked successfully, We will contact you soon');
-      form.reset();
+      
+      
+      // Send data to Google Sheet
+      const url = 'https://script.google.com/macros/s/AKfycbwQrpYAx2aoH3tmYefZujUsBBlQwmZux24mz8tIA-3Nf-3Do0Iz7HtoALvHkkA5MhdAbQ/exec';
+      const payload = {
+        name: name,
+        age: age,
+        mobile: mobile,
+        date: date
+      };
+      
+      fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        // Handle success
+        showMessage('Appointment booked successfully, We will contact you soon');
+        form.reset(); // Clear input fields
+        submitButton.disabled = true; // Disable submit button
+      })
+      .catch(error => {
+        // Handle error
+        showMessage('Error booking appointment');
+        // You can add any error handling or messages here
+      });
     }
-
-    // Function to show messages
+    
     function showMessage(message) {
       const messageContainer = document.getElementById('message-container');
       messageContainer.textContent = message;
     }
-  </script>
-
-  <!-- Include Google Sheets API library -->
-  <script src="https://apis.google.com/js/api.js"></script>
-  <script>
-    // Load the Google Sheets API
-    gapi.load('client:auth2', () => {
-      gapi.client.init({
-        apiKey: 'AIzaSyDhT3l7hQXQSOzOscEk4R7Edz57ec6VF0Q' // Replace with your API key
-      }).then(() => {
-        console.log('Google Sheets API initialized');
-      }, (error) => {
-        console.error('Error initializing Google Sheets API', error);
-      });
-    });
   </script>
 </body>
 </html>
