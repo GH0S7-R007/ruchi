@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment Voucher</title>
+  <style>
+    body {
+      background-color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .navbar {
+      background-color: #f0f0f0;
+      padding: 10px;
+      text-align: center;
+    }
+    
+    .back-button {
+      color: #333;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    
+    .profile-pic {
+      border-radius: 50%;
+      display: block;
+      margin: 20px auto;
+      width: 150px;
+    }
+    
+    .doctor-name {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    .doctor-degree {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .form-container {
+      background-color: #f8f8f8;
+      margin: 20px;
+      padding: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 10px;
+      background-color: transparent;
+    }
+    
+    .form-input:focus {
+      outline: none;
+    }
+    
+    .submit-button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 20px 40px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    
+  </div>
+  
+  <div class="doctor-name">Karuna Arts & Sports Club</div>
+  <div class="doctor-degree">സംഭാവന തുക ആഡ് ചെയ്യനുള്ള സ്ഥലം </div>
+  
+  <div class="form-container">
+    <form id="login-form" onsubmit="login(event)">
+      <label class="form-label" for="accessCode">Enter Access Code:</label>
+      <input class="form-input" type="text" id="accessCode" required>
+      
+      <button class="submit-button" type="submit" id="login-button">Login</button>
+    </form>
+  </div>
+  
+  <div class="form-container" style="display: none;" id="payment-form-container">
+    <form id="payment-form" onsubmit="submitForm(event)">
+      <label class="form-label" for="name">ക്യാഷ് മേടിച്ച ആളിന്റെ പേര് :</label>
+    <input class="form-input" type="text" id="name" required disabled> <!-- Add the 'disabled' attribute here -->
+   
+      <label class="form-label" for="age">ക്യാഷ് തന്ന ആളിന്റെ പേര് </label>
+      <input class="form-input" type="text" id="age" required>
+      
+      <label class="form-label" for="mobile">തുക:</label>
+      <input class="form-input" type="number" id="mobile" required>
+      
+      <label class="form-label" for="date">Date:</label>
+      <input class="form-input" type="date" id="date" required>
+      
+      <button class="submit-button" type="submit" id="submit-button">Save Voucher</button>
+    </form>
+  </div>
+  
+  <div id="message-container"></div> <!-- Message container -->
+  
+  <script>
+    const accessCodes = {
+      "102037": "vishnu",
+      "076836": "Amal",
+      "458629": "Akhil G",
+      "997290": "Akhil Rajan",
+      "027845": "Aravind",
+      "027767": "Jishnu",
+      "725669": "Pranav"
+    };
+    
+    function login(event) {
+      event.preventDefault(); // Prevent form submission
+      
+      const accessCodeInput = document.getElementById('accessCode');
+      const enteredCode = accessCodeInput.value;
+      
+      if (accessCodes.hasOwnProperty(enteredCode)) {
+        const nameInput = document.getElementById('name');
+        nameInput.value = accessCodes[enteredCode];
+        accessCodeInput.disabled = true;
+        
+        const loginFormContainer = document.getElementById('login-form');
+        const paymentFormContainer = document.getElementById('payment-form-container');
+        loginFormContainer.style.display = 'none';
+        paymentFormContainer.style.display = 'block';
+      } else {
+        showMessage("You are not able to use this. Please contact Vishnu Saji.");
+      }
+    }
+    
+    function submitForm(event) {
+      event.preventDefault(); // Prevent form submission
+      
+      const form = document.getElementById('payment-form');
+      const submitButton = document.getElementById('submit-button');
+      
+      // Get form values
+      const name = form.elements['name'].value;
+      const age = form.elements['age'].value;
+      const mobile = form.elements['mobile'].value;
+      const date = form.elements['date'].value;
+      
+      // Send data to Google Sheet
+      const url = 'https://script.google.com/macros/s/AKfycby0L7px4RB21PUGSsZir3Sw1tJu3A_9V5DFZ-RB0D2eiukYhE7TCHC-uAeRaV2wIrFfUg/exec';
+      const payload = {
+        name: name,
+        age: age,
+        mobile: mobile,
+        date: date
+      };
+      
+      fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        // Handle success
+        showMessage('Voucher added to payment book. Contact Vishnu Saji for edit anything');
+        form.reset(); // Clear input fields
+        submitButton.disabled = true; // Disable submit button
+      })
+      .catch(error => {
+        // Handle error
+        showMessage('Error booking appointment');
+        // You can add any error handling or messages here
+      });
+    }
+    
+    function showMessage(message) {
+      const messageContainer = document.getElementById('message-container');
+      messageContainer.textContent = message;
+    }
+  </script>
+</body>
+</html>
