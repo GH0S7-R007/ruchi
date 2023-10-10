@@ -1,1 +1,83 @@
-a
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden; /* Hide scrollbar */
+    }
+
+    .login-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .login-input {
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+
+    .login-button {
+      padding: 10px 20px;
+    }
+
+    .iframe-container {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-form" id="loginForm">
+      <input type="text" id="username" class="login-input" placeholder="Username">
+      <input type="password" id="password" class="login-input" placeholder="Password">
+      <button onclick="login()" class="login-button">Login</button>
+    </div>
+
+    <div class="iframe-container" id="iframe-container" style="display: none;">
+      <iframe src="https://gh0s7-r007.github.io/ruchi/chat1.html" id="myIframe"></iframe>
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const loginForm = document.getElementById('loginForm');
+      const iframeContainer = document.getElementById('iframe-container');
+
+      if ((username === 'Vishnu' && password === '691523') ||
+          (username === 'Aswani' && password === 'iloveyou')) {
+        loginForm.style.display = 'none';  // Hide login form
+        iframeContainer.style.display = 'block';  // Show iframe
+      } else {
+        alert('Invalid login credentials.');
+      }
+    }
+  </script>
+</body>
+</html>
