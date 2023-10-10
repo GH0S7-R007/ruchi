@@ -43,24 +43,32 @@
       left: 0;
     }
 
+    .custom-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px;
+    }
+
+    .name-label {
+      margin-bottom: 5px;
+    }
+
+    .message-label {
+      margin-bottom: 5px;
+    }
+
+    .message-input {
+      width: 9cm;
+      height: 3cm;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
     iframe {
       width: 100%;
       height: 100%;
       border: none;
-    }
-
-    .custom-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .name-input {
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      width: 200px;
     }
   </style>
 </head>
@@ -74,100 +82,81 @@
 
     <div class="iframe-container" id="iframe-container" style="display: none;">
       <div class="custom-content">
-        <input type="text" id="name" class="name-input" readonly>
-        <p>Welcome, <span id="logged-in-username"></span></p>
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custom Content</title>
-  <style>
-    /* Add your styles here if needed */
-  </style>
-</head>
-<body>
-  <div class="form-container">
-    <form id="appointment-form" onsubmit="submitForm(event)">
-      <label class="form-label" for="name">Name</label>
-      <input class="form-input" type="text" id="name" required>
-      
-      <label class="form-label" for="message">Enter your message here.</label>
-      <input class="form-input" type="text" id="message" required>
-      
-      <button class="submit-button" type="submit" id="submit-button">Send</button>
-    </form>
-  </div>
-  
-  <div id="message-container"></div> <!-- Message container -->
-  
-  <script>
-    function submitForm(event) {
-      event.preventDefault(); // Prevent form submission
-      
-      const form = document.getElementById('appointment-form');
-      const submitButton = document.getElementById('submit-button');
-      
-      // Get form values
-      const name = form.elements['name'].value;
-      const message = form.elements['message'].value;
-      
-      // Send data to Google Sheet
-      const url = 'https://script.google.com/macros/s/AKfycbxbjBCMxMofpKHOgmuGwvFGtBxKhowiKuFRy_m4JQnGOJmBjviFnI0cqkltGBZ-a2nz/exec';
-      const payload = {
-        name: name,
-        message: message
-      };
-      
-      fetch(url, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      })
-      .then(response => {
-        // Handle success
-        showMessage('Message sent...!');
-        form.reset(); // Clear input fields
-        submitButton.disabled = true; // Disable submit button
-      })
-      .catch(error => {
-        // Handle error
-        showMessage('Error sending message');
-        // You can add any error handling or messages here
-      });
-    }
-    
-    function showMessage(message) {
-      const messageContainer = document.getElementById('message-container');
-      messageContainer.textContent = message;
-    }
-  </script>
-</body>
-</html>
-
+        <label class="name-label">Sending message as: <span id="username-span"></span></label>
+        <iframe src="https://gh0s7-r007.github.io/ruchi/chat1.html"></iframe>
+        <label class="message-label">Enter your message here.</label>
+        <input type="text" id="message" class="message-input" required>
+        <button class="submit-button" type="button" onclick="sendMessage()">Send</button>
+        <div id="message-container"></div> <!-- Message container -->
       </div>
     </div>
   </div>
 
   <script>
-    function login() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      const loginForm = document.getElementById('loginForm');
-      const iframeContainer = document.getElementById('iframe-container');
+    let username; // Variable to store the username
 
-      if ((username === 'Vishnu' && password === '691523') ||
-          (username === 'Aswani' && password === 'iloveyou')) {
-        loginForm.style.display = 'none';  // Hide login form
-        iframeContainer.style.display = 'block';  // Show iframe
-        document.getElementById('name').value = username;  // Populate the name input
-        document.getElementById('logged-in-username').innerText = username;  // Display logged-in username
-      } else {
-        alert('Invalid login credentials.');
-      }
+function login() {
+  username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const loginForm = document.getElementById('loginForm');
+  const iframeContainer = document.getElementById('iframe-container');
+
+  if ((username === 'Vishnu' && password === '691523') ||
+      (username === 'Aswani' && password === 'iloveyou')) {
+    loginForm.style.display = 'none';  // Hide login form
+    iframeContainer.style.display = 'flex';  // Show iframe container
+    document.getElementById('username-span').innerText = username;  // Display username
+
+    // Refresh the iframe content every 2 seconds
+    setInterval(refreshIframe, 4000);
+  } else {
+    alert('Invalid login credentials.');
+  }
+}
+
+function refreshIframe() {
+  const iframe = document.querySelector('iframe');
+  if (iframe) {
+    iframe.src = iframe.src;  // Reload the iframe
+  }
+}
+
+    function sendMessage() {
+  const message = document.getElementById('message').value;
+
+  // Concatenate the username and message with a colon (:)
+  const formattedMessage = `: ${message}`;
+
+  // Send data to Google Sheet
+  const url = 'https://script.google.com/macros/s/AKfycbxbjBCMxMofpKHOgmuGwvFGtBxKhowiKuFRy_m4JQnGOJmBjviFnI0cqkltGBZ-a2nz/exec';
+  const payload = {
+    name: username, // Use the stored username
+    message: formattedMessage // Use the formatted message
+  };
+
+  fetch(url, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(response => {
+    // Handle success
+    showMessage('Message sent...!');
+    document.getElementById('message').value = ''; // Clear the message input field
+  })
+  .catch(error => {
+    // Handle error
+    showMessage('Error sending message');
+  });
+}
+
+
+    function showMessage(message) {
+      const messageContainer = document.getElementById('message-container');
+      messageContainer.textContent = message;
     }
   </script>
 </body>
