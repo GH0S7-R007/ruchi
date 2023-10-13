@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
   <style>
-    body, html {
-      height: 100%;
+    body {
       margin: 0;
       font-family: Arial, sans-serif;
       overflow: hidden; /* Hide scrollbar */
@@ -17,7 +16,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100%;
+      height: 100vh;
     }
 
     .login-form {
@@ -29,10 +28,22 @@
     .login-input {
       margin-bottom: 10px;
       padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 200px;
     }
 
     .login-button {
       padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .login-button:hover {
+      background-color: #45a049;
     }
 
     .iframe-container {
@@ -41,6 +52,7 @@
       position: fixed;
       top: 0;
       left: 0;
+      display: none;
     }
 
     .custom-content {
@@ -52,23 +64,40 @@
 
     .name-label {
       margin-bottom: 5px;
+      font-weight: bold;
     }
 
     .message-label {
       margin-bottom: 5px;
+      font-weight: bold;
     }
 
     .message-input {
-      width: 9cm;
-      height: 3cm;
+      width: 100%;
       padding: 10px;
       margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .submit-button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background-color: #45a049;
     }
 
     iframe {
       width: 100%;
-      height: 100%;
+      height: 300px;
       border: none;
+      background-color: lightyellow; /* Set the background color */
     }
   </style>
 </head>
@@ -80,7 +109,7 @@
       <button onclick="login()" class="login-button">Login</button>
     </div>
 
-    <div class="iframe-container" id="iframe-container" style="display: none;">
+    <div class="iframe-container" id="iframe-container">
       <div class="custom-content">
         <label class="name-label">Sending message as: <span id="username-span"></span></label>
         <iframe src="https://gh0s7-r007.github.io/ruchi/chat1.html"></iframe>
