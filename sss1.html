@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden; /* Hide scrollbar */
+    }
+
+    .login-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .login-input {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 200px;
+    }
+
+    .login-button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .login-button:hover {
+      background-color: #45a049;
+    }
+
+    .iframe-container {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: none;
+    }
+
+    .custom-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px;
+    }
+
+    .name-label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .message-label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .message-input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .submit-button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background-color: #45a049;
+    }
+
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      background-color: lightyellow; /* Set the background color */
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-form" id="loginForm">
+      <input type="text" id="username" class="login-input" placeholder="Username">
+      <input type="password" id="password" class="login-input" placeholder="Password">
+      <button onclick="login()" class="login-button">Login</button>
+    </div>
+
+    <div class="iframe-container" id="iframe-container">
+      <div class="custom-content">
+        <label class="name-label">Sending message as: <span id="username-span"></span></label>
+        <iframe src="https://gh0s7-r007.github.io/ruchi/chat1.html"></iframe>
+        <label class="message-label">Enter your message here.</label>
+        <input type="text" id="message" class="message-input" required>
+        <button class="submit-button" type="button" onclick="sendMessage()">Send</button>
+        <div id="message-container"></div> <!-- Message container -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let username; // Variable to store the username
+
+function login() {
+  username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const loginForm = document.getElementById('loginForm');
+  const iframeContainer = document.getElementById('iframe-container');
+
+  if ((username === 'Arya' && password === 'kl26') ||
+      (username === 'Vishnu' && password === 'ka03')) {
+    loginForm.style.display = 'none';  // Hide login form
+    iframeContainer.style.display = 'flex';  // Show iframe container
+    document.getElementById('username-span').innerText = username;  // Display username
+
+    // Refresh the iframe content every 2 seconds
+    setInterval(refreshIframe, 4000);
+  } else {
+    alert('Invalid login credentials.');
+  }
+}
+
+function refreshIframe() {
+  const iframe = document.querySelector('iframe');
+  if (iframe) {
+    iframe.src = iframe.src;  // Reload the iframe
+  }
+}
+
+    function sendMessage() {
+  const message = document.getElementById('message').value;
+
+  // Concatenate the username and message with a colon (:)
+  const formattedMessage = `: ${message}`;
+
+  // Send data to Google Sheet
+  const url = 'https://script.google.com/macros/s/AKfycbxbjBCMxMofpKHOgmuGwvFGtBxKhowiKuFRy_m4JQnGOJmBjviFnI0cqkltGBZ-a2nz/exec';
+  const payload = {
+    name: username, // Use the stored username
+    message: formattedMessage // Use the formatted message
+  };
+
+  fetch(url, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(response => {
+    // Handle success
+    showMessage('Message sent...!');
+    document.getElementById('message').value = ''; // Clear the message input field
+  })
+  .catch(error => {
+    // Handle error
+    showMessage('Error sending message');
+  });
+}
+
+
+    function showMessage(message) {
+      const messageContainer = document.getElementById('message-container');
+      messageContainer.textContent = message;
+    }
+  </script>
+</body>
+</html>
