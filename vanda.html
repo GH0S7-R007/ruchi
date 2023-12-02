@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat of two hearts</title>
+  <title>Payment Form</title>
 </head>
 <body>
-  <form id="chat-form">
+  <form id="payment-form">
     <label for="uname">User Name:</label>
     <input type="text" id="uname" name="uname" required><br>
 
-    <label for="amt">amount you paid:</label>
-    <textarea id="amt" name="amt" required></textarea><br>
+    <label for="amt">Amount:</label>
+    <input type="text" id="amt" name="amt" required><br>
     
-    <label for="utr">enter UTR number:</label>
-    <textarea id="utr" name="utr" required></textarea><br>
+    <label for="utr">UTR Number:</label>
+    <input type="text" id="utr" name="utr" required><br>
 
-    <button type="button" onclick="submitForm()">Submit</button>
+    <button type="button" onclick="submitPayment()">Submit Payment</button>
   </form>
 
   <script>
-    function submitForm() {
+    function submitPayment() {
       const uname = document.getElementById('uname').value;
       const amt = document.getElementById('amt').value;
       const utr = document.getElementById('utr').value;
@@ -33,7 +33,7 @@
       };
 
       // Send data to Google Apps Script using fetch API
-      fetch('https://script.google.com/macros/s/AKfycbwvn9gSVo6_wfwOTGKNecirhpxKuN-uVyIqSwqrAiw1utD5AP8Wk8VTuFXUL27P-_jT/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbxFUZySbkJO2uu4hCUFWFQ-9unQBXOeh0zNtDnx0QiMLvQtrRfkN1PnK-t5KosiRSQI/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,7 +51,7 @@
         }
       })
       .catch(error => {
-        console.error('Error submitting data:', error);
+        console.error('Error submitting payment:', error);
       });
     }
   </script>
