@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat of two hearts</title>
+</head>
+<body>
+  <form id="chat-form">
+    <label for="uname">User Name:</label>
+    <input type="text" id="uname" name="uname" required><br>
+
+    <label for="amt">amount you paid:</label>
+    <textarea id="amt" name="amt" required></textarea><br>
+    
+    <label for="utr">enter UTR number:</label>
+    <textarea id="utr" name="utr" required></textarea><br>
+
+    <button type="button" onclick="submitForm()">Submit</button>
+  </form>
+
+  <script>
+    function submitForm() {
+      const uname = document.getElementById('uname').value;
+      const amt = document.getElementById('amt').value;
+      const utr = document.getElementById('utr').value;
+
+      // Prepare data for submission
+      const data = {
+        uname: uname,
+        amt: amt,
+        utr: utr
+      };
+
+      // Send data to Google Apps Script using fetch API
+      fetch('https://script.google.com/macros/s/AKfycbwvn9gSVo6_wfwOTGKNecirhpxKuN-uVyIqSwqrAiw1utD5AP8Wk8VTuFXUL27P-_jT/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response
+        if (data.success) {
+          alert(data.message);
+          // You can perform additional actions here if needed
+        } else {
+          alert('Error: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error submitting data:', error);
+      });
+    }
+  </script>
+</body>
+</html>
