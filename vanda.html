@@ -16,7 +16,7 @@
     <label for="utr">UTR Number:</label>
     <input type="text" id="utr" name="utr" required><br>
 
-    <button type="button" onclick="submitPayment()">Submit Payment</button>
+    <button type="button" onclick="submitPayment()">Submit</button>
   </form>
 
   <script>
@@ -33,7 +33,7 @@
       };
 
       // Send data to Google Apps Script using fetch API
-      fetch('https://script.google.com/macros/s/AKfycbxFUZySbkJO2uu4hCUFWFQ-9unQBXOeh0zNtDnx0QiMLvQtrRfkN1PnK-t5KosiRSQI/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbz4JViAhmdQf8wk7MAEX8SuLw5T3BqGfLEa0OPuFgi8GRsXplTp2V4R8BO_cvRg6ly_/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
